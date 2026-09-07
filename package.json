@@ -1,15 +1,10 @@
 {
-  "name": "vscode-3d-preview",
-  "publisher": "tatsy",
-  "displayName": "vscode-3d-preview",
-  "description": "VS Code 3D Preview",
-  "version": "0.2.4",
+  "name": "vscode-3d-preview-true-origin",
+  "publisher": "tyang-local",
+  "displayName": "3D Viewer Light — True Origin",
+  "description": "Preview meshes and point clouds with helpers at the true world origin and a selectable up-axis.",
+  "version": "0.1.0",
   "icon": "logo.png",
-  "homepage": "https://github.com/tatsy/vscode-3d-preview",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/tatsy/vscode-3d-preview"
-  },
   "engines": {
     "vscode": "^1.96.0"
   },
@@ -32,7 +27,7 @@
     "vscode"
   ],
   "activationEvents": [
-    "onCustomEditor:3dpreview.viewer"
+    "onCustomEditor:trueOrigin3dPreview.viewer"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -43,8 +38,8 @@
     },
     "customEditors": [
       {
-        "viewType": "3dpreview.viewer",
-        "displayName": "3D Viewer Light",
+        "viewType": "trueOrigin3dPreview.viewer",
+        "displayName": "3D Viewer Light — True Origin",
         "selector": [
           {
             "filenamePattern": "*.obj"
@@ -68,64 +63,74 @@
       }
     ],
     "configuration": {
-      "title": "VSCode 3D Preview",
+      "title": "3D Viewer Light — True Origin",
       "properties": {
-        "3dpreview.hideControlsOnStart": {
+        "trueOrigin3dPreview.hideControlsOnStart": {
           "type": "boolean",
           "default": false,
           "description": "Fold the control panel if true is specified."
         },
-        "3dpreview.showPoints": {
+        "trueOrigin3dPreview.showPoints": {
           "type": "boolean",
           "default": false,
           "description": "Show point cloud."
         },
-        "3dpreview.showWireframe": {
+        "trueOrigin3dPreview.showWireframe": {
           "type": "boolean",
           "default": false,
           "description": "Show wireframe."
         },
-        "3dpreview.showMesh": {
+        "trueOrigin3dPreview.showMesh": {
           "type": "boolean",
           "default": true,
           "description": "Show mesh triangles."
         },
-        "3dpreview.showGridHelper": {
+        "trueOrigin3dPreview.showGridHelper": {
           "type": "boolean",
           "default": true,
           "description": "Show grid helper."
         },
-        "3dpreview.showAxesHelper": {
+        "trueOrigin3dPreview.showAxesHelper": {
           "type": "boolean",
           "default": true,
           "description": "Show axes helper."
         },
-        "3dpreview.backgroundColor": {
+        "trueOrigin3dPreview.upAxis": {
+          "type": "string",
+          "enum": [
+            "x",
+            "y",
+            "z"
+          ],
+          "default": "z",
+          "description": "World up-axis. Z matches ROS/Orbbec camera_link coordinates."
+        },
+        "trueOrigin3dPreview.backgroundColor": {
           "type": "string",
           "default": "#121212",
           "description": "Default background color."
         },
-        "3dpreview.pointColor": {
+        "trueOrigin3dPreview.pointColor": {
           "type": "string",
           "default": "#cc0000",
           "description": "Default point color."
         },
-        "3dpreview.pointSize": {
+        "trueOrigin3dPreview.pointSize": {
           "type": "number",
           "default": 0.5,
           "description": "Default point size."
         },
-        "3dpreview.wireframeColor": {
+        "trueOrigin3dPreview.wireframeColor": {
           "type": "string",
           "default": "#0000ff",
           "description": "Default wireframe color."
         },
-        "3dpreview.wireframeWidth": {
+        "trueOrigin3dPreview.wireframeWidth": {
           "type": "number",
           "default": 0.5,
           "description": "Default wireframe width."
         },
-        "3dpreview.fogDensity": {
+        "trueOrigin3dPreview.fogDensity": {
           "type": "number",
           "default": 0,
           "description": "Fog density."
@@ -138,7 +143,7 @@
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile && npm run lint",
-    "lint": "eslint src --ext ts",
+    "lint": "ESLINT_USE_FLAT_CONFIG=false eslint src --ext ts",
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
@@ -148,12 +153,13 @@
     "@types/vscode": "^1.96.0",
     "@typescript-eslint/eslint-plugin": "^8.20.0",
     "@typescript-eslint/parser": "^8.20.0",
+    "@vscode/vsce": "^3.9.2",
     "eslint": "^9.18.0",
+    "eslint-config-prettier": "^10.1.8",
     "glob": "^11.0.1",
     "mocha": "^11.0.1",
     "tslint": "^6.1.3",
     "typescript": "^5.7.3",
-    "vsce": "^2.15.0",
     "vscode-test": "^1.6.1"
   }
 }

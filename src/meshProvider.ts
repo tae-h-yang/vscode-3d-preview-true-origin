@@ -3,6 +3,12 @@ import * as path from "path";
 import { MeshDocument } from "./meshDocument";
 import { disposeAll, getNonce } from "./utils";
 
+interface WebviewMessage {
+  type: string;
+  requestId?: number;
+  body?: unknown;
+}
+
 /**
  * provider for mesh viewers.
  */
@@ -25,7 +31,7 @@ export class MeshViewProvider
   }
 
   // view type name
-  private static readonly viewType = "3dpreview.viewer";
+  private static readonly viewType = "trueOrigin3dPreview.viewer";
 
   // tracks all known webviews
   private readonly webviews = new WebviewCollection();
@@ -34,14 +40,14 @@ export class MeshViewProvider
 
   async openCustomDocument(
     uri: vscode.Uri,
-    openContext: vscode.CustomDocumentOpenContext,
-    token: vscode.CancellationToken
+    _openContext: vscode.CustomDocumentOpenContext,
+    _token: vscode.CancellationToken
   ): Promise<MeshDocument> {
     const document = new MeshDocument(uri);
     const listeners: vscode.Disposable[] = [];
 
     listeners.push(
-      document.onDidChangeDocument((e) => {
+      document.onDidChangeDocument(() => {
         for (const webviewPanel of this.webviews.get(document.uri)) {
           this.postMessage(webviewPanel, "update", {});
         }
@@ -56,7 +62,7 @@ export class MeshViewProvider
   async resolveCustomEditor(
     document: MeshDocument,
     webviewPanel: vscode.WebviewPanel,
-    token: vscode.CancellationToken
+    _token: vscode.CancellationToken
   ): Promise<void> {
     // add the webview to our internal set of active webviews
     this.webviews.add(document.uri, webviewPanel);
@@ -76,7 +82,9 @@ export class MeshViewProvider
 
     if (
       document.uri.scheme == "file" &&
-      vscode.workspace.getConfiguration("3dpreview").get("hotReload", true)
+      vscode.workspace
+        .getConfiguration("trueOrigin3dPreview")
+        .get("hotReload", true)
     ) {
       const watcher = vscode.workspace.createFileSystemWatcher(
         document.uri.fsPath,
@@ -108,7 +116,7 @@ export class MeshViewProvider
   }
 
   private getSettings(uri: vscode.Uri): string {
-    const config = vscode.workspace.getConfiguration("3dpreview");
+    const config = vscode.workspace.getConfiguration("trueOrigin3dPreview");
     const initialData = {
       fileToLoad: uri.toString(),
       hideControlsOnStart: config.get("hideControlsOnStart", false),
@@ -121,6 +129,7 @@ export class MeshViewProvider
       showMesh: config.get("showMesh", true),
       showGridHelper: config.get("showGridHelper", true),
       showAxesHelper: config.get("showAxesHelper", true),
+      upAxis: config.get("upAxis", "z"),
       pointColor: config.get("pointColor", "#cc0000"),
       wireframeColor: config.get("wireframeColor", "#0000ff"),
       fogDensity: config.get("fogDensity", 0.01),
@@ -164,7 +173,7 @@ export class MeshViewProvider
         <link href="${styleUri}" rel="stylesheet" />
         ${this.getSettings(fileToLoad)}
 
-        <title>3D Mesh Viewer Light</title>
+        <title>3D Viewer Light — True Origin</title>
       </head>
       <body>
         <script nonce="${nonce}" type="importmap">
@@ -179,22 +188,26 @@ export class MeshViewProvider
       </html>`;
   }
 
-  private readonly _callbacks = new Map<number, (response: any) => void>();
+  private readonly _callbacks = new Map<number, (response: unknown) => void>();
 
   private postMessage(
     panel: vscode.WebviewPanel,
     type: string,
-    body: any
+    body: unknown
   ): void {
     panel.webview.postMessage({ type, body });
   }
 
-  private onMessage(document: MeshDocument, message: any) {
+  private onMessage(_document: MeshDocument, message: WebviewMessage) {
     switch (message.type) {
-      case "response":
+      case "response": {
+        if (message.requestId === undefined) {
+          return;
+        }
         const callback = this._callbacks.get(message.requestId);
         callback?.(message.body);
         return;
+      }
     }
   }
 }

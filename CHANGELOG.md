@@ -4,6 +4,12 @@ All notable changes to the "vscode-3dpreview" extension will be documented in th
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## v0.1.0 — True Origin fork
+
+- Keep axes and grid helpers at the real world origin `(0, 0, 0)`.
+- Add selectable X/Y/Z up-axis support, defaulting to Z-up.
+- Use a distinct extension and custom-editor ID for side-by-side installation.
+
 ## v0.2.2
 
 - Default point size support ([#7](https://github.com/tatsy/vscode-3d-preview/issues/7))

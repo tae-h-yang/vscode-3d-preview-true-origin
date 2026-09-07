@@ -60,9 +60,20 @@ class Viewer {
       0.1,
       5000.0
     );
+    this.updateCameraUp();
 
     // check extension
     this.setMesh(this.params.fileToLoad);
+  }
+
+  updateCameraUp() {
+    if (this.params.upAxis === 'x') {
+      this.camera.up.set(1, 0, 0);
+    } else if (this.params.upAxis === 'z') {
+      this.camera.up.set(0, 0, 1);
+    } else {
+      this.camera.up.set(0, 1, 0);
+    }
   }
 
   mainloop() {
@@ -83,8 +94,6 @@ class Viewer {
       this.scene.remove(this.axesHelper);
     }
 
-    // BBox center
-    const center = utils.getBBoxCenter(this.points.geometry);
     const extent = utils.getBBoxMaxExtent(this.points.geometry);
 
     // Grid helper
@@ -100,11 +109,18 @@ class Viewer {
         const colorCenterLine = new THREE.Color('#888888');
         const colorGrid = new THREE.Color('#888888');
         this.gridHelper = new THREE.GridHelper(size, divisions, colorCenterLine, colorGrid);
-        this.gridHelper.position.x += center.x - extent * 0.5;
-        this.gridHelper.position.y += center.y - extent * 0.5;
-        this.gridHelper.position.z += center.z - extent * 0.5;
         this.gridHelper.material.linewidth = 10;
         this.gridHelper.name = 'gridHelper';
+      }
+
+      // GridHelper is an XZ plane by default (Y-up). Keep it at the true
+      // world origin and rotate it to be perpendicular to the selected axis.
+      this.gridHelper.position.set(0, 0, 0);
+      this.gridHelper.rotation.set(0, 0, 0);
+      if (this.params.upAxis === 'x') {
+        this.gridHelper.rotation.z = -Math.PI * 0.5;
+      } else if (this.params.upAxis === 'z') {
+        this.gridHelper.rotation.x = Math.PI * 0.5;
       }
 
       this.scene.add(this.gridHelper);
@@ -114,12 +130,11 @@ class Viewer {
     if (this.params.showAxesHelper) {
       if (this.axesHelper === null) {
         this.axesHelper = new THREE.AxesHelper(extent);
-        this.axesHelper.position.x += center.x - extent * 0.5;
-        this.axesHelper.position.y += center.y - extent * 0.5;
-        this.axesHelper.position.z += center.z - extent * 0.5;
         this.axesHelper.material.linewidth = 10;
         this.axesHelper.name = 'axesHelper';
       }
+
+      this.axesHelper.position.set(0, 0, 0);
 
       this.scene.add(this.axesHelper);
     }
@@ -271,6 +286,7 @@ class Viewer {
     const camPos = utils.autoCameraPos(this.points.geometry);
 
     this.camera.position.copy(camPos);
+    this.updateCameraUp();
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.controls.target = camTarget;
     this.controls.update();
@@ -329,6 +345,14 @@ class Viewer {
 
     let folder = this.gui.addFolder('Grid Helper');
     folder.open();
+    folder
+      .add(this.params, 'upAxis', ['x', 'y', 'z'])
+      .name('world up axis')
+      .onChange(() => {
+        this.updateCameraUp();
+        this.controls.update();
+        this.updateHelpers();
+      });
     folder
       .add(this.params, 'showAxesHelper')
       .name('show axes helper')
