@@ -25,8 +25,8 @@ intrinsics or a universal camera/world coordinate convention.
 ```sh
 npm ci
 npm run compile
-npx vsce package --allow-missing-repository --no-rewrite-relative-links
-code --install-extension vscode-3d-preview-true-origin-0.1.0.vsix
+npx @vscode/vsce package
+code --install-extension vscode-3d-preview-true-origin-0.1.1.vsix
 ```
 
 Use **Reopen Editor With...** and select **3D Viewer Light — True Origin**.
@@ -34,17 +34,11 @@ Use **Reopen Editor With...** and select **3D Viewer Light — True Origin**.
 ## Marketplace publishing
 
 Before publishing, replace the placeholder `tyang-local` publisher in
-`package.json` with a publisher ID you own, update the repository URL, then use
-`vsce login <publisher-id>` and `vsce publish`. Publishing requires a Visual
-Studio Marketplace publisher and personal access token; local VSIX installation
-does not.
+`package.json` with a publisher ID you own, then follow the
+[official publishing guide](https://code.visualstudio.com/api/working-with-extensions/publishing-extension).
+Local VSIX installation does not require a Marketplace account.
 
 [![License: GPL3](https://img.shields.io/badge/License-GPL3-green.svg)](https://opensource.org/licenses/gpl-3-0)
-[![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/tatsy.vscode-3d-preview)](https://marketplace.visualstudio.com/items?itemName=tatsy.vscode-3d-preview)
-[![Visual Studio Marketplace Installs](https://img.shields.io/visual-studio-marketplace/r/tatsy.vscode-3d-preview)](https://marketplace.visualstudio.com/items?itemName=tatsy.vscode-3d-preview)
-[![Visual Studio Marketplace Installs](https://img.shields.io/visual-studio-marketplace/d/tatsy.vscode-3d-preview)](https://marketplace.visualstudio.com/items?itemName=tatsy.vscode-3d-preview)
-
-**See in VS Marketplace:** [vscode-3d-preview](https://marketplace.visualstudio.com/items?itemName=tatsy.vscode-3d-preview)
 
 ## Description
 

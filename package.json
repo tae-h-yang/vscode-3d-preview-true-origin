@@ -3,7 +3,16 @@
   "publisher": "tyang-local",
   "displayName": "3D Viewer Light — True Origin",
   "description": "Preview meshes and point clouds with helpers at the true world origin and a selectable up-axis.",
-  "version": "0.1.0",
+  "version": "0.1.1",
+  "license": "GPL-3.0-only",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tae-h-yang/vscode-3d-preview-true-origin.git"
+  },
+  "homepage": "https://github.com/tae-h-yang/vscode-3d-preview-true-origin#readme",
+  "bugs": {
+    "url": "https://github.com/tae-h-yang/vscode-3d-preview-true-origin/issues"
+  },
   "icon": "logo.png",
   "engines": {
     "vscode": "^1.96.0"

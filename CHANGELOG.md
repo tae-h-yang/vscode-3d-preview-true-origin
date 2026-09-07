@@ -4,6 +4,11 @@ All notable changes to the "vscode-3dpreview" extension will be documented in th
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## v0.1.1 — Release infrastructure
+
+- Add repository and GPL-3.0 metadata for this fork.
+- Replace inherited release automation with a build-only validation workflow.
+
 ## v0.1.0 — True Origin fork
 
 - Keep axes and grid helpers at the real world origin `(0, 0, 0)`.
