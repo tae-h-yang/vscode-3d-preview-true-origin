@@ -4,6 +4,10 @@ All notable changes to the "vscode-3dpreview" extension will be documented in th
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## v0.1.2 — Marketplace identity
+
+- Set the publisher ID to `tae-h-yang` for Marketplace distribution.
+
 ## v0.1.1 — Release infrastructure
 
 - Add repository and GPL-3.0 metadata for this fork.

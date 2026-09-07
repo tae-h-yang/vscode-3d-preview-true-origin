@@ -26,17 +26,18 @@ intrinsics or a universal camera/world coordinate convention.
 npm ci
 npm run compile
 npx @vscode/vsce package
-code --install-extension vscode-3d-preview-true-origin-0.1.1.vsix
+code --install-extension vscode-3d-preview-true-origin-0.1.2.vsix
 ```
 
 Use **Reopen Editor With...** and select **3D Viewer Light — True Origin**.
 
-## Marketplace publishing
+## Marketplace
 
-Before publishing, replace the placeholder `tyang-local` publisher in
-`package.json` with a publisher ID you own, then follow the
-[official publishing guide](https://code.visualstudio.com/api/working-with-extensions/publishing-extension).
-Local VSIX installation does not require a Marketplace account.
+The configured extension ID is
+`tae-h-yang.vscode-3d-preview-true-origin`. Follow the
+[official publishing guide](https://code.visualstudio.com/api/working-with-extensions/publishing-extension)
+to upload a packaged VSIX. Local VSIX installation does not require a
+Marketplace account.
 
 [![License: GPL3](https://img.shields.io/badge/License-GPL3-green.svg)](https://opensource.org/licenses/gpl-3-0)
 
