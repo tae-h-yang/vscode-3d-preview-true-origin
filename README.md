@@ -9,9 +9,16 @@ created from upstream commit `0e982c4a9b0ee3d7bae04b8221aee32df8021c28`.
 - Axes and grid helpers are located at the actual world origin `(0, 0, 0)`.
 - The original extension's bounding-box-based helper translation is removed.
 - The world up-axis is selectable as X, Y, or Z.
-- Z-up is the default, matching ROS and Orbbec `camera_link` point clouds.
+- Z-up is the default and the world up-axis can be changed for files that use a
+  different coordinate convention. PLY does not define a universal up-axis.
 - Auto-framing still targets the geometry's bounding-box center; this changes
   only the initial view and never transforms point coordinates or helpers.
+
+The viewer consumes the vertex coordinates already stored in a mesh or point
+cloud. It does not assume a camera brand, reconstruct depth, or infer camera
+intrinsics. Camera intrinsics are normally used before export to deproject a
+depth image into XYZ vertices; standard PLY files do not preserve those
+intrinsics or a universal camera/world coordinate convention.
 
 ## Local installation
 

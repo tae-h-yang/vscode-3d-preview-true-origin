@@ -103,7 +103,7 @@
             "z"
           ],
           "default": "z",
-          "description": "World up-axis. Z matches ROS/Orbbec camera_link coordinates."
+          "description": "World up-axis used to orient the camera and grid. Vertex coordinates are never transformed."
         },
         "trueOrigin3dPreview.backgroundColor": {
           "type": "string",
